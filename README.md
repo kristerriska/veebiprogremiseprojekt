@@ -1,7 +1,7 @@
 # Projekt Piltide üleslaadimise kommuun
 # 2: suurelt projekti veebirakenduse pilt
 
-Krister Riska, Norman Salong
+#Krister Riska, Norman Salong
 
 Üritame luua veebilehte, kus saab üles laadide pilte. Avalikke pilte saab lehitseda veebilehe külastaja. Kasutajad saavad üksteist lisada; "sõbraks", et näha ainult sõpradele nähtavaid pilte. On ka privaatsed pildid, mis on näha ainult kasutajale endale.;
 
