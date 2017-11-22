@@ -71,7 +71,7 @@
         }
         
         public function imageInfoToDatabase($user, $filename) {
-
+            $mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
             $stmt = $mysqli->prepare("INSERT INTO userinfo_img (username, img_name) VALUES (?, ?)");
             echo $mysqli->error;
 
