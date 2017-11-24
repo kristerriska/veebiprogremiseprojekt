@@ -142,7 +142,7 @@
             $stmt = $mysqli->prepare("INSERT INTO userinfo_img (username, img_name) VALUES (?, ?)");
             echo $mysqli->error;
 
-            $stmt->bind_param("ssi", $username, $filename);
+            $stmt->bind_param("ss", $username, $filename);
             if ($stmt->execute()){
                 echo "\n Info updated!";
             } else {
