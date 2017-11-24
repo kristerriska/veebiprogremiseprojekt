@@ -27,7 +27,7 @@
 
         public userLogin($username, $password) {
 
-            $stmt = $mysqli->prepare("SELECT username, password password FROM userinfo WHERE username = ?");
+            $stmt = $mysqli->prepare("SELECT username, password FROM userinfo WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->bind_result($usernameFromDb, $passwordFromDb);
             $stmt->execute();
