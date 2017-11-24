@@ -9,7 +9,7 @@
 
         }
 
-        public userRegister($username, $password, $email, $gender, $profileimgname) {
+        public function userRegister($username, $password, $email, $gender, $profileimgname) {
             $stmt = $mysqli->prepare("INSERT INTO userinfo (username, password, email, gender, profile_img) VALUES (?, ?, ?, ?, ?)");
             echo $mysqli->error;
 
@@ -25,7 +25,7 @@
 
         }
 
-        public userLogin($username, $password) {
+        public function userLogin($username, $password) {
 
             $stmt = $mysqli->prepare("SELECT username, password FROM userinfo WHERE username = ?");
             $stmt->bind_param("s", $username);
@@ -74,7 +74,7 @@
 		#		}
 		#	}
 		#See kood tagastab järjest kõik pildi nimed mis andmebaasis on, nende abil saab kaustadest pildifailid kätte.
-		public userUploadedImg($username) {
+		public function userUploadedImg($username) {
 			$result = array();
 			$i = 0;
 			// Create connection
@@ -101,25 +101,25 @@
 			$conn->close();
 			}
 			#Tagastab profiili info, et infot kasutada tee nii: $userProfileInfo = userProfileInfo("kasutajanimi"); $userProfileInfo[0] on kasutajanimi, $userProfileInfo[1] on email jne.
-			public userProfileInfo($username) {
-				$stmt = $mysqli->prepare("SELECT username, email, gender, profile_img FROM userinfo WHERE username = ?");
-				$stmt->bind_param("s", $username);
-				$stmt->bind_result($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
-				$stmt->execute();
+		public function userProfileInfo($username) {
+			$stmt = $mysqli->prepare("SELECT username, email, gender, profile_img FROM userinfo WHERE username = ?");
+			$stmt->bind_param("s", $username);
+			$stmt->bind_result($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
+			$stmt->execute();
 				
 				
-				if ($stmt->fetch()){
-					$result = array($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
+			if ($stmt->fetch()){
+				$result = array($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
 
-					return $result;
-				}
+				return $result;
+			}
 					
-				else {
-					$notice = "Username does not exist";
-				}
+			else {
+				$notice = "Username does not exist";
+			}
 				
-				$stmt->close();
-				$mysqli->close();
+			$stmt->close();
+			$mysqli->close();
 			}
 
 
