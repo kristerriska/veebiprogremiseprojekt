@@ -9,11 +9,11 @@
 
         }
 
-        public userRegister($username, $password, $email, $gender) {
-            $stmt = $mysqli->prepare("INSERT INTO userinfo (username, password, email, gender) VALUES (?, ?, ?, ?)");
+        public userRegister($username, $password, $email, $gender, $profileimgname) {
+            $stmt = $mysqli->prepare("INSERT INTO userinfo (username, password, email, gender, profile_img) VALUES (?, ?, ?, ?, ?)");
             echo $mysqli->error;
 
-            $stmt->bind_param("sssi", $username, $password, $email, $gender);
+            $stmt->bind_param("sssis", $username, $password, $email, $gender, $profileimgname);
             if ($stmt->execute()){
                 mkdir("/users/img/".$_SESSION["user"], 0777);
                 echo "\n Registered";
@@ -56,7 +56,74 @@
         }
 
 
-    }
+	}
+	
+	class getFromDatabase {
+
+		function __construct(){
+
+		}
+		#Tagastab kõik pildinimed mis on kasutajanimega seotud. et neid näidata tee nii: $userUploadedimg = userUploadedImg("kasutajanimi");
+		#$image_loop = 1;
+		#while($image_loop == 1){
+		#	$i=0;
+		#	if(isset($userUploadedimg[i])){
+		#		-siia pildi kuvamise kood-
+		#	} else {
+		#		$image_loop = 0;
+		#		}
+		#	}
+		#See kood tagastab järjest kõik pildi nimed mis andmebaasis on, nende abil saab kaustadest pildifailid kätte.
+		public userUploadedImg($username) {
+			$result = array();
+			$i = 0;
+			// Create connection
+			$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+			// Check connection
+			if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			} 
+			
+			$sql_prepared = "SELECT username, img_name FROM userinfo_img WHERE username = ".$username;
+			$sql = $sql_prepared;
+			$result = $conn->query($sql);
+			
+			if ($result->num_rows > 0) {
+				// output data of each row
+				while($row = $result->fetch_assoc()) {
+					$result[$i] = $row["img_name"];
+					$i = $i+1;
+				}
+				return $result;
+			} else {
+				echo "0 results";
+			}
+			$conn->close();
+			}
+			#Tagastab profiili info, et infot kasutada tee nii: $userProfileInfo = userProfileInfo("kasutajanimi"); $userProfileInfo[0] on kasutajanimi, $userProfileInfo[1] on email jne.
+			public userProfileInfo($username) {
+				$stmt = $mysqli->prepare("SELECT username, email, gender, profile_img FROM userinfo WHERE username = ?");
+				$stmt->bind_param("s", $username);
+				$stmt->bind_result($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
+				$stmt->execute();
+				
+				
+				if ($stmt->fetch()){
+					$result = array($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
+
+					return $result;
+				}
+					
+				else {
+					$notice = "Username does not exist";
+				}
+				
+				$stmt->close();
+				$mysqli->close();
+			}
+
+
+	}
 
     class Photoupload {
 		private $tempName;
