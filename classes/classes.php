@@ -1,19 +1,20 @@
 <?php
 
     class userFunction {
-
+		
 
         function __construct() {
 
-            $mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+			$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 
         }
 
         public function userRegister($username, $password, $email, $gender, $profileimgname) {
+			$hash_password = hash("sha512", $password);
             $stmt = $mysqli->prepare("INSERT INTO userinfo (username, password, email, gender, profile_img) VALUES (?, ?, ?, ?, ?)");
             echo $mysqli->error;
 
-            $stmt->bind_param("sssis", $username, $password, $email, $gender, $profileimgname);
+            $stmt->bind_param("sssis", $username, $hash_password, $email, $gender, $profileimgname);
             if ($stmt->execute()){
                 mkdir("/users/img/".$_SESSION["user"], 0777);
                 echo "\n Registered";

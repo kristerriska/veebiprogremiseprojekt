@@ -4,9 +4,9 @@ class userFunction
 
 function userRegister(username, password, email, gender, profileimgname)
 # Saades sisendid ühendab ennast mysql databaseiga
-# Registreerib kasutaja andmebaasi (NB ei krüpteeri salasõna, seda peab tegema enne sisendi andmist sellele funktsioonile) ja loob kausta /users/img/"username"
+# Registreerib kasutaja andmebaasi ja loob kausta /users/img/"username"
 function userLogin(username, password)
-# Saades sisendid ühendab ennast mysql andmebaasiga ja kontrollib salasõna(sellele funktsioonile on dekrüpteerimine sisse kirjutatud)
+# Saades sisendid ühendab ennast mysql andmebaasiga ja kontrollib salasõna
 # Kui kasutaja saab sisse logitud, viib ta kasutaja enda profiililehele milleks on /profile.php?user="kasutajanimi"
 
 class getFromDatabase
