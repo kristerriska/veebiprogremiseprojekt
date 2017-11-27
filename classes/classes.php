@@ -165,6 +165,7 @@
 			}
 		}
 		#Profiili pildi suurus - 180x180
+	    	#Tavapildi suurus  640x480
 		public function resizeImage($width, $height){
 			$this->createImage();
 			$imageWidth = imagesx($this->myTempImage);
