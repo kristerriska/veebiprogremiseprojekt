@@ -103,14 +103,14 @@
 			}
 			#Tagastab profiili info, et infot kasutada tee nii: $userProfileInfo = userProfileInfo("kasutajanimi"); $userProfileInfo[0] on kasutajanimi, $userProfileInfo[1] on email jne.
 		public function userProfileInfo($username) {
-			$stmt = $mysqli->prepare("SELECT username, email, gender, profile_img FROM userinfo WHERE username = ?");
+			$stmt = $mysqli->prepare("SELECT username, email, gender, profile_img, user_bio FROM userinfo WHERE username = ?");
 			$stmt->bind_param("s", $username);
-			$stmt->bind_result($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
+			$stmt->bind_result($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb, $userBioFromDb);
 			$stmt->execute();
 				
 				
 			if ($stmt->fetch()){
-				$result = array($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb);
+				$result = array($usernameFromDb, $emailFromDb, $genderFromDb, $profileimgFromDb, $userBioFromDb);
 
 				return $result;
 			}
