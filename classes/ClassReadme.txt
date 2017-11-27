@@ -3,16 +3,16 @@ CLASS README
 class userFunction 
 
 function userRegister(username, password, email, gender, profileimgname)
-# Saades sisendid ¸hendab ennast mysql databaseiga
+# Saades sisendid √ºhendab ennast mysql databaseiga
 # Registreerib kasutaja andmebaasi ja loob kausta /users/img/"username"
 function userLogin(username, password)
-# Saades sisendid ¸hendab ennast mysql andmebaasiga ja kontrollib salasına
+# Saades sisendid √ºhendab ennast mysql andmebaasiga ja kontrollib salas√µna
 # Kui kasutaja saab sisse logitud, viib ta kasutaja enda profiililehele milleks on /profile.php?user="kasutajanimi"
 
 class getFromDatabase
 
 function userUploadedImg(username)
-#Saades sisendi, j‰rjestab kıik pildid mis selle kasutajanimega seotud on (v.a profiilipilt) array v‰ljana.
+#Saades sisendi, j√§rjestab k√µik pildid mis selle kasutajanimega seotud on (v.a profiilipilt) array v√§ljana.
 #$userUploadedimg = userUploadedImg("kasutajanimi");
 #$image_loop = 1;
 		#while($image_loop == 1){
@@ -23,13 +23,14 @@ function userUploadedImg(username)
 		#		$image_loop = 0;
 		#		}
 		#	}
-kood selle array v‰‰rtuste k‰tte saamiseks
+kood selle array v√§√§rtuste k√§tte saamiseks
 
 function userProfileInfo(username)
 #Tagastab profiili info, samamoodi arrayna
 #kui $userProfileInfo = userProfileInfo("kasutajanimi")
-#siis v‰ljund peaks olema selline
+#siis v√§ljund peaks olema selline
 # $userProfileInfo[0] = kasutajanimi
 # $userProfileInfo[1] = email
 # $userProfileInfo[2] = gender
 # $userProfileInfo[3] = profileimgname
+# $userProfileInfo[4] = userbio
