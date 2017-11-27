@@ -1,4 +1,4 @@
-CLASS README
+﻿CLASS README
 
 class userFunction 
 
@@ -31,6 +31,12 @@ function userProfileInfo(username)
 #siis väljund peaks olema selline
 # $userProfileInfo[0] = kasutajanimi
 # $userProfileInfo[1] = email
+
+function imagePrivacy(img_name)
+#Tagastab andmebaasist väärtuse pildi privaatsuse kohta
+# 0 - Avalik pilt
+# 1 - Ainult Sõbrad
+# 2 - Privaatne
 # $userProfileInfo[2] = gender
 # $userProfileInfo[3] = profileimgname
 # $userProfileInfo[4] = userbio

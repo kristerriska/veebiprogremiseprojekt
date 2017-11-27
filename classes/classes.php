@@ -8,16 +8,21 @@
         }
 
         public function userRegister($username, $password, $email, $gender) {
-	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-	$hash_password = hash("sha512", $password);
+			$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+			$hash_password = hash("sha512", $password);
             $stmt = $mysqli->prepare("INSERT INTO userinfo (username, password, email, gender) VALUES (?, ?, ?, ?)");
             echo $mysqli->error;
 
-            $stmt->bind_param("sssis", $username, $hash_password, $email, $gender);
+            $stmt->bind_param("sssi", $username, $hash_password, $email, $gender);
             if ($stmt->execute()){
                 mkdir("/users/img/".$_SESSION["user"], 0777);
-		mkdir("/users/img/".$_SESSION["user"]."/profile_img", 0777);
-                echo "\n Registered";
+				mkdir("/users/img/".$_SESSION["user"]."/profile_img", 0777);
+				$stmtFriends = $mysqli->prepare("CREATE TABLE ".$username."_friends (
+					ID int NOT NULL AUTO_INCREMENT,
+					username VARCHAR(64) PRIMARY KEY );
+					");
+				$stmt->execute();
+				echo "\n Registered";
             } else {
                 echo "\n Error : " .$stmt->error;
             }
@@ -54,7 +59,9 @@
             
             $stmt->close();
             $mysqli->close();
-        }
+		}
+		
+
 
 
 	}
@@ -101,6 +108,27 @@
 			}
 			$conn->close();
 			}
+		
+		public function imagePrivacy($imgName) {
+			$mysql = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+			if ($mysql->connect_error) {
+				die("Connection failed: " . $mysql->connect_error);
+				$result = -1; #-1 tähendab turvariski ehk seda funk. kasutav kood peab arvestama et -1 korral pilti ei näidata.
+				return $result_query;
+				exit();
+			}
+
+			$sql = "SELECT img_privacy FROM userinfo_img WHERE img_name = ".$imgName;
+			$result = $mysql->query($sql);
+
+			if($result->num_rows > 0){
+				$result_query = $row["img_privacy"];
+				return $result_query;
+			}
+			#Pildi privaatsus on jagatud järgmiselt: 0-Avalik; 1-Ainult sõbrad; 2-Privaatne
+		}
+
+
 			#Tagastab profiili info, et infot kasutada tee nii: $userProfileInfo = userProfileInfo("kasutajanimi"); $userProfileInfo[0] on kasutajanimi, $userProfileInfo[1] on email jne.
 		public function userProfileInfo($username) {
 			$stmt = $mysqli->prepare("SELECT username, email, gender, profile_img, user_bio FROM userinfo WHERE username = ?");
@@ -122,7 +150,34 @@
 			$stmt->close();
 			$mysqli->close();
 			}
-
+			#Töötab samamoodi nagu userUploadedImg
+		public function userFriendInfo($username) {
+			$result = array();
+			$i = 0;
+			// Create connection
+			$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+			// Check connection
+			if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			} 
+			
+			$sql_prepared = "SELECT username FROM ".$username."_friends";
+			$sql = $sql_prepared;
+			$result = $conn->query($sql);
+			
+			if ($result->num_rows > 0) {
+				// output data of each row
+				while($row = $result->fetch_assoc()) {
+					$result[$i] = $row["username"];
+					$i = $i+1;
+				}
+				return $result;
+			} else {
+				echo "0 results";
+			}
+			$conn->close();
+			}
+		}
 
 	}
 
@@ -138,12 +193,12 @@
 			$this->imageFileType = $type;
         }
         
-        public function imageInfoToDatabase($user, $filename) {
+        public function imageInfoToDatabase($user, $filename, $imgPrivacy) {
             $mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-            $stmt = $mysqli->prepare("INSERT INTO userinfo_img (username, img_name) VALUES (?, ?)");
+            $stmt = $mysqli->prepare("INSERT INTO userinfo_img (username, img_name, img_privacy) VALUES (?, ?, ?)");
             echo $mysqli->error;
 
-            $stmt->bind_param("ss", $username, $filename);
+            $stmt->bind_param("ssi", $username, $filename, $imgPrivacy);
             if ($stmt->execute()){
                 echo "\n Info updated!";
             } else {
