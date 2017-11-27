@@ -164,7 +164,7 @@
 				$this->myTempImage = imagecreatefromgif($this->tempName);
 			}
 		}
-		
+		#Profiili pildi suurus - 180x180
 		public function resizeImage($width, $height){
 			$this->createImage();
 			$imageWidth = imagesx($this->myTempImage);
@@ -179,22 +179,6 @@
 			$this->myImage = $this->resize_image($this->myTempImage, $imageWidth, $imageHeight, round($imageWidth / $sizeRatio), round($imageHeight / $sizeRatio));
 		}
 	    	
-	    	public function profileResizeImage(){
-			$this->createImage();
-			$imageWidth = imagesx($this->myTempImage);
-			$imageHeight = imagesy($this->myTempImage);
-			
-			$sizeRatio = 1;
-			if($imageWidth > $imageHeight){
-				$sizeRatio = $imageWidth / 180;
-			} else {
-				$sizeRatio = $imageHeight / 180;
-			}
-			$this->myImage = $this->resize_image($this->myTempImage, $imageWidth, $imageHeight, round($imageWidth / $sizeRatio), round($imageHeight / $sizeRatio));
-		}
-		
-	    	
-		
 		public function readExif(){
 			@$exif = exif_read_data($this->tempName, "ANY_TAG", 0, true);
 			if(!empty($exif["DateTimeOriginal"])){
