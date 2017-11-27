@@ -5,18 +5,18 @@
 
         function __construct() {
 
-			$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-
         }
 
-        public function userRegister($username, $password, $email, $gender, $profileimgname) {
-			$hash_password = hash("sha512", $password);
-            $stmt = $mysqli->prepare("INSERT INTO userinfo (username, password, email, gender, profile_img) VALUES (?, ?, ?, ?, ?)");
+        public function userRegister($username, $password, $email, $gender) {
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$hash_password = hash("sha512", $password);
+            $stmt = $mysqli->prepare("INSERT INTO userinfo (username, password, email, gender) VALUES (?, ?, ?, ?)");
             echo $mysqli->error;
 
-            $stmt->bind_param("sssis", $username, $hash_password, $email, $gender, $profileimgname);
+            $stmt->bind_param("sssis", $username, $hash_password, $email, $gender);
             if ($stmt->execute()){
                 mkdir("/users/img/".$_SESSION["user"], 0777);
+		mkdir("/users/img/".$_SESSION["user"]."/profile_img", 0777);
                 echo "\n Registered";
             } else {
                 echo "\n Error : " .$stmt->error;
@@ -27,7 +27,7 @@
         }
 
         public function userLogin($username, $password) {
-
+	    $mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
             $stmt = $mysqli->prepare("SELECT username, password FROM userinfo WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->bind_result($usernameFromDb, $passwordFromDb);
@@ -178,15 +178,22 @@
 			}
 			$this->myImage = $this->resize_image($this->myTempImage, $imageWidth, $imageHeight, round($imageWidth / $sizeRatio), round($imageHeight / $sizeRatio));
 		}
-		
-		private function resize_image($image, $origW, $origH, $w, $h){
-			$dst = imagecreatetruecolor($w, $h);
-			imagesavealpha($dst, true);
-			$transColor = imagecolorallocatealpha($dst, 0, 0, 0, 127);
-			imagefill($dst, 0, 0, $transColor);
-			imagecopyresampled($dst, $image, 0, 0, 0, 0, $w, $h, $origW, $origH);
-			return $dst;
+	    	
+	    	public function profileResizeImage(){
+			$this->createImage();
+			$imageWidth = imagesx($this->myTempImage);
+			$imageHeight = imagesy($this->myTempImage);
+			
+			$sizeRatio = 1;
+			if($imageWidth > $imageHeight){
+				$sizeRatio = $imageWidth / 180;
+			} else {
+				$sizeRatio = $imageHeight / 180;
+			}
+			$this->myImage = $this->resize_image($this->myTempImage, $imageWidth, $imageHeight, round($imageWidth / $sizeRatio), round($imageHeight / $sizeRatio));
 		}
+		
+	    	
 		
 		public function readExif(){
 			@$exif = exif_read_data($this->tempName, "ANY_TAG", 0, true);
@@ -198,6 +205,7 @@
 		}
 		
 		#Igale kasutajale omanimeline kaust!!!! See tehakse registreerides ja on /users/img/$_SESSION["user"] ehk kasutaja nimi
+	    	#Profiilipildid lähevad /users/img/$_SESSION["user"]/profile_img
 		public function savePhoto($directory, $fileName){
 			$target_file = $directory .$fileName;
 			if($this->imageFileType == "jpg" or $this->imageFileType == "jpeg"){
@@ -224,14 +232,6 @@
 			return $notice;
 		}
 		
-		public function saveOriginal($directory, $fileName){
-			$target_file = $directory .$fileName;
-			if (move_uploaded_file($this->tempName, $target_file)) {
-				$notice .= "true";
-			} else {
-				$notice .= "false";
-			}
-		}
 		
 		public function clearImages(){
 			imagedestroy($this->myTempImage);
