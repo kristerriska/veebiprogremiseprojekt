@@ -1,5 +1,11 @@
-body {
-  background: #e9e9e9;
+
+
+body { 
+  background: url("https://i.ytimg.com/vi/KhKSX2MFwdE/maxresdefault.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   color: #666666;
   font-family: 'RobotoDraft', 'Roboto', sans-serif;
   font-size: 14px;
