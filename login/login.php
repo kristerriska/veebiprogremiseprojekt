@@ -11,6 +11,7 @@
 	$signupFirstName = "";
 	$signupFamilyName = "";
 	$signupEmail = "";
+	$gender = "";
 	
 	$loginEmail = "";
 	$notice="!";
@@ -18,6 +19,7 @@
 	$signupFamilyNameError = "";
 	$signupEmailError = "";
 	$signupPasswordError = "";
+	$signupGenderError = "";
 	
 	$loginEmailError ="";
 	
@@ -84,13 +86,19 @@
 		}
 	}
 	
+	if (isset($_POST["gender"]) && !empty($_POST["gender"])){ //kui on määratud ja pole tühi
+			$gender = intval($_POST["gender"]);
+		} else {
+			$signupGenderError = " (Palun vali sobiv!) Määramata!";
+	}
+	
 	//UUE KASUTAJA ANDMEBAASI KIRJUTAMINE, kui kõik on olemas	
 	if (empty($signupFirstNameError) and empty($signupFamilyNameError) and empty($signupEmailError) and empty($signupPasswordError)){
 		echo "Hakkan salvestama!";
 		//krüpteerin parooli
 		$signupPassword = hash("sha512", $_POST["signupPassword"]);
 		//echo "\n Parooli " .$_POST["signupPassword"] ." räsi on: " .$signupPassword;
-		signUp($signupFirstName, $signupFamilyName, $signupEmail, $signupPassword);
+		signUp($signupFirstName, $signupFamilyName, $gender, $signupEmail, $signupPassword);
 	}
 	
 	}
@@ -148,6 +156,12 @@
 	  <div class="input-container">
         <input name="signupFamilyName" type="text" value="<?php echo $signupFamilyName; ?>" required="required">
 		<label>Perekonnanimi</label>
+        <div class="bar"></div>
+      </div>
+	  <div class="input-containerr">
+        <input type="radio" name="gender" value="1" <?php if ($gender == "1") {echo 'checked';} ?>><label>Mees</label>
+		<input type="radio" name="gender" value="2" <?php if ($gender == "2") {echo 'checked';} ?>><label>Naine</label>
+		<label></label>
         <div class="bar"></div>
       </div>
 	  <div class="input-container">

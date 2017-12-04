@@ -201,6 +201,23 @@ body {
   position: relative;
   margin: 0 60px 50px;
 }
+.card .input-containerr {/*Minu lisatud*/
+  position: relative;
+  margin: 0 60px 50px;
+}
+.card .input-containerr input {/*Minu lisatud*/
+  background: none;
+  height: 20px;
+  position: relative;
+  color: #212121;
+  width: 10%;
+  font-size: 30px;
+}
+input[type="radio"]/*Minu lisatud*/
+{
+    font-size:24px;
+	color: #212121;
+}
 .card .input-container input {
   outline: none;
   z-index: 1;
