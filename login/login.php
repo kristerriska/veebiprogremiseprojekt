@@ -1,107 +1,104 @@
 <?php
-	require("../../../config.php");
-	require("functions.php");
-	//echo $serverHost;
-	
-	//kui on juba sisseloginud
-	if(isset($_SESSION["userId"])){
-		header("Location: main.php");
-		exit();
-	}
-	$signupFirstName = "";
-	$signupFamilyName = "";
-	$signupEmail = "";
-	$gender = "";
-	
-	$loginEmail = "";
-	$notice="!";
-	$signupFirstNameError = "";
-	$signupFamilyNameError = "";
-	$signupEmailError = "";
-	$signupPasswordError = "";
-	$signupGenderError = "";
-	
-	$loginEmailError ="";
-	
-	if(isset($_POST["loginButton"])){
-		//kas on kasutajanimi sisestatud
-		if (isset ($_POST["loginEmail"])){
-			if (empty ($_POST["loginEmail"])){
-				$loginEmailError ="NB! Sisselogimiseks on 	vajalik kasutajatunnus (e-posti aadress)!";
-			} else {
-				$loginEmail = $_POST["loginEmail"];
-			}
+require("config.php");
+require("functions.php");
+require("./classes/classes.php");
+//echo $serverHost;
+//kui on juba sisseloginud
+if(isset($_SESSION["user"])){
+	header("Location: main.php?user=".$_SESSION["user"]);
+	exit();
+}
+$signupFirstName = "";
+$signupFamilyName = "";
+$signupEmail = "";
+$gender = "";
+
+$loginUser = "";
+$notice="!";
+$signupFirstNameError = "";
+$signupFamilyNameError = "";
+$signupEmailError = "";
+$signupPasswordError = "";
+$signupGenderError = "";
+
+$loginUserError ="";
+
+if(isset($_POST["loginButton"])){
+	//kas on kasutajanimi sisestatud
+	if (isset ($_POST["loginUser"])){
+		if (empty ($_POST["loginUser"])){
+			$loginUserError ="NB! Sisselogimiseks on 	vajalik kasutajatunnus";
+		} else {
+			$loginUser = $_POST["loginUser"];
 		}
+	}
+	
+	if(!empty($_POST["loginUser"]) and !empty($_POST["loginPassword"])){
+		echo "Alustan sisselogimist!";
+		//$hash = hash("sha512", $_POST["loginEmail"]);
+		$loginPassword = $_POST["loginPassword"];
+		$login = new userFunction();
+		$login->userLogin($loginUser, $loginPassword);
+		unset($login);
+
+		//$notice = signIn($loginEmail, $hash);
+	}
+	
+}//if loginButton
+
+//kas klikiti kasutaja loomise nupul
+if(isset($_POST["signupButton"])){
+
+//kontrollime, kas kirjutati eesnimi
+if (isset ($_POST["signupFirstName"])){
+	if (empty($_POST["signupFirstName"])){
+		$signupFirstNameError ="NB! Väli on kohustuslik!";
+	} else {
+		$signupFirstName = test_input($_POST["signupFirstName"]);
+	}
+}
+
+//kontrollime, kas kirjutati kasutajanimeks email
+if (isset ($_POST["signupEmail"])){
+	if (empty ($_POST["signupEmail"])){
+		$signupEmailError ="NB! Väli on kohustuslik!";
+	} else {
+		$signupEmail = test_input($_POST["signupEmail"]);
 		
-		if(!empty($loginEmail) and !empty($_POST["loginPassword"])){
-			//echo "Alustan sisselogimist!";
-			//$hash = hash("sha512", $_POST["loginEmail"]);
-			$notice = signIn($loginEmail, $_POST["loginPassword"]);
-			//$notice = signIn($loginEmail, $hash);
-		}
-		
-	}//if loginButton
-	
-	//kas klikiti kasutaja loomise nupul
-	if(isset($_POST["signupButton"])){
-	
-	//kontrollime, kas kirjutati eesnimi
-	if (isset ($_POST["signupFirstName"])){
-		if (empty($_POST["signupFirstName"])){
-			$signupFirstNameError ="NB! Väli on kohustuslik!";
-		} else {
-			$signupFirstName = test_input($_POST["signupFirstName"]);
+		$signupEmail = filter_var($signupEmail, FILTER_SANITIZE_EMAIL);
+		$signupEmail = filter_var($signupEmail, FILTER_VALIDATE_EMAIL);
+	}
+}
+
+if (isset ($_POST["signupPassword"])){
+	if (empty ($_POST["signupPassword"])){
+		$signupPasswordError = "NB! Väli on kohustuslik!";
+	} else {
+		//polnud tühi
+		if (strlen($_POST["signupPassword"]) < 8){
+			$signupPasswordError = "NB! Liiga lühike salasõna, vaja vähemalt 8 tähemärki!";
 		}
 	}
-	
-	//kontrollime, kas kirjutati perekonnanimi
-	if (isset ($_POST["signupFamilyName"])){
-		if (empty($_POST["signupFamilyName"])){
-			$signupFamilyNameError ="NB! Väli on kohustuslik!";
-		} else {
-			$signupFamilyName = test_input($_POST["signupFamilyName"]);
-		}
-	}
-	
-	//kontrollime, kas kirjutati kasutajanimeks email
-	if (isset ($_POST["signupEmail"])){
-		if (empty ($_POST["signupEmail"])){
-			$signupEmailError ="NB! Väli on kohustuslik!";
-		} else {
-			$signupEmail = test_input($_POST["signupEmail"]);
-			
-			$signupEmail = filter_var($signupEmail, FILTER_SANITIZE_EMAIL);
-			$signupEmail = filter_var($signupEmail, FILTER_VALIDATE_EMAIL);
-		}
-	}
-	
-	if (isset ($_POST["signupPassword"])){
-		if (empty ($_POST["signupPassword"])){
-			$signupPasswordError = "NB! Väli on kohustuslik!";
-		} else {
-			//polnud tühi
-			if (strlen($_POST["signupPassword"]) < 8){
-				$signupPasswordError = "NB! Liiga lühike salasõna, vaja vähemalt 8 tähemärki!";
-			}
-		}
-	}
-	
-	if (isset($_POST["gender"]) && !empty($_POST["gender"])){ //kui on määratud ja pole tühi
-			$gender = intval($_POST["gender"]);
-		} else {
-			$signupGenderError = " (Palun vali sobiv!) Määramata!";
-	}
-	
-	//UUE KASUTAJA ANDMEBAASI KIRJUTAMINE, kui kõik on olemas	
-	if (empty($signupFirstNameError) and empty($signupFamilyNameError) and empty($signupEmailError) and empty($signupPasswordError)){
-		echo "Hakkan salvestama!";
-		//krüpteerin parooli
-		$signupPassword = hash("sha512", $_POST["signupPassword"]);
-		//echo "\n Parooli " .$_POST["signupPassword"] ." räsi on: " .$signupPassword;
-		signUp($signupFirstName, $signupFamilyName, $gender, $signupEmail, $signupPassword);
-	}
-	
-	}
+}
+
+if (isset($_POST["gender"]) && !empty($_POST["gender"])){ //kui on määratud ja pole tühi
+		$gender = intval($_POST["gender"]);
+	} else {
+		$signupGenderError = " (Palun vali sobiv!) Määramata!";
+}
+
+//UUE KASUTAJA ANDMEBAASI KIRJUTAMINE, kui kõik on olemas	
+if (empty($signupFirstNameError) and empty($signupFamilyNameError) and empty($signupEmailError) and empty($signupPasswordError)){
+	echo "Hakkan salvestama!";
+	//krüpteerin parooli
+	//$signupPassword = hash("sha512", $_POST["signupPassword"]);
+	//echo "\n Parooli " .$_POST["signupPassword"] ." räsi on: " .$signupPassword;
+	$register = new userFunction();
+	$register->userRegister($signupFirstName, $_POST["signupPassword"], $signupEmail, $gender);
+	unset($register);
+}
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -128,8 +125,8 @@
     <h1 class="title">Sisselogimine</h1>
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
       <div class="input-container">
-        <input name="loginEmail" type="email" required="required" value="<?php echo $loginEmail; ?>">
-        <label>E-mail</label>
+        <input name="loginUser" type="text" required="required" value="<?php echo $loginUser; ?>">
+        <label>Kasutajanimi</label>
         <div class="bar"></div>
       </div>
       <div class="input-container">
@@ -150,20 +147,15 @@
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
       <div class="input-container">
         <input name="signupFirstName" type="text" value="<?php echo $signupFirstName; ?>" required="required">
-        <label>Eesnimi</label>
+        <label>Kasutajanimi</label>
 		<div class="bar"></div>
       </div>
 	  <div class="input-container">
-        <input name="signupFamilyName" type="text" value="<?php echo $signupFamilyName; ?>" required="required">
-		<label>Perekonnanimi</label>
-        <div class="bar"></div>
-      </div>
-	  <div class="input-containerr">
-        <input type="radio" name="gender" value="1" <?php if ($gender == "1") {echo 'checked';} ?>><label>Mees</label>
-		<input type="radio" name="gender" value="2" <?php if ($gender == "2") {echo 'checked';} ?>><label>Naine</label>
-		<label></label>
-        <div class="bar"></div>
-      </div>
+		<select name="gender">
+			<option value="1" selected>Mees</option>
+			<option value="2">Naine</option>
+		</select>
+	  </div>
 	  <div class="input-container">
         <input name="signupEmail" type="email" value="<?php echo $signupEmail; ?>" required="required">
 		<label>E-mail</label>
