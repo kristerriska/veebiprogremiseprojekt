@@ -32,6 +32,17 @@ poster VARCHAR(64),
 comment VARCHAR(500),  
 PRIMARY KEY (ID)  
 );  
-
+  
 Krister: Mida juurde õppisin?  
-Css-iga tegelemist ja php ja mysqli-ga sidumist. Kasutajasõbraliku veebilehe loomist
+Css-iga tegelemist ja php ja mysqli-ga sidumist. Kasutajasõbraliku veebilehe loomist  
+Mis ebaõnnestus?  
+Piltide kommenteerimise võimalus + like-mise võimalus.  
+Mis oli keeruline?  
+Php-ga sidumine, et kõik töötaks normaalselt.  
+  
+Norman: Mida juurde õppisin?  
+mysql ja php sidumine, classidega töötamist ja php muutujatega töötamist  
+Mis ebaõnnestus?  
+Piltide kommenteerimine, javascriptiga töötamine  
+Mis oli keeruline?  
+Alguses php classide tööle saamine ja mysql tabelite sidumine.  
