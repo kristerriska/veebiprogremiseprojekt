@@ -1,6 +1,8 @@
 # veebiprogremiseprojekt Piltide kommuun
 Veebiprogremmeerimise rühmatöö 2017
 
+Krister Riska, Norman Salong  
+
 Eesmärgiks on luua kommuun, kus saab pilte üles laadida, kommenteerida, valides kas pilt on avalik või privaatne. 
 Sihtrühmaks on koolinoore, fotograafia/töötlusega tegelevad inimesed.  
 1: Saab sisse logida ja registreerida  
