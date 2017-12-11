@@ -32,3 +32,6 @@ poster VARCHAR(64),
 comment VARCHAR(500),  
 PRIMARY KEY (ID)  
 );  
+
+Krister: Mida juurde õppisin?  
+Css-iga tegelemist ja php ja mysqli-ga sidumist. Kasutajasõbraliku veebilehe loomist
