@@ -230,6 +230,7 @@
 				$_SESSION["prof_user"] = $usernameFromDb;
 				$_SESSION["prof_email"] = $emailFromDb;
 				$_SESSION["prof_gender"] = $genderFromDb;
+				#$_SESSION["prof_date"] = $date;
 				if($profileimgFromDb == ""){
 					$_SESSION["prof_profileimg"]="banaan.png";
 				}

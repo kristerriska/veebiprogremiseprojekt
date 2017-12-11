@@ -132,10 +132,11 @@
 <html>
 <head>
 	<title>
-		<?php echo $_SESSION["prof_user"] ." " .$_SESSION["prof_email"]; ?>
+		<?php echo $_SESSION["prof_user"]?> Profiil
 	</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/png" href="http://greeny.cs.tlu.ee/~salonorm/veebiprog_iseseisev/favicon.PNG">
 		<link rel="stylesheet" href="css/w3.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
@@ -201,10 +202,10 @@
       <!-- Profiil -->
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
-         <h4 class="w3-center"><?php echo $_SESSION["prof_user"] ."<br></br> " .$_SESSION["prof_email"]; ?></h4>
+         <h4 class="w3-center"><?php echo $_SESSION["prof_user"]?></h4>
          <p class="w3-center"><img src="<?php echo "pics/".$_SESSION["prof_profileimg"]; ?>" class="w3-circle" style="height:106px;width:106px" alt="banaan"></p>
          <hr>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> 16. veebruar, 1998</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>Liitus <?php echo date('j. F, Y',strtotime($_SESSION['prof_date']));?></p>
         </div>
       </div>
       <br>

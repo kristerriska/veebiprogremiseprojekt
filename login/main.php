@@ -128,12 +128,13 @@ ini_set('display_errors', 1);
 ?>
 <!DOCTYPE html>
 <html>
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
 	<title>
-		<?php echo $_SESSION["prof_user"] ." " .$_SESSION["prof_email"]; ?>
+		<?php echo $_SESSION["prof_user"]?> Fotomaailm
 	</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/png" href="http://greeny.cs.tlu.ee/~salonorm/veebiprog_iseseisev/favicon.PNG">
 		<link rel="stylesheet" href="css/w3.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
@@ -177,7 +178,7 @@ ini_set('display_errors', 1);
 					<input name="fileToUpload" type="file">
 					<input name="submit" type="submit" value="Postita"  class="w3-button w3-theme">
 					<input type="radio" name="img_privacy"  value="1" <?php if ($img_privacy == "1") {echo 'checked';} ?>>Avalik
-  				<input type="radio" name="img_privacy"  value="2" <?php if ($img_privacy == "2") {echo 'checked';} ?>>Privaatne
+					<input type="radio" name="img_privacy"  value="2" <?php if ($img_privacy == "2") {echo 'checked';} ?>>Privaatne
 					<span><?php echo $img_privacyError; ?></span>
 				</form>
 
@@ -189,7 +190,7 @@ ini_set('display_errors', 1);
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
         <img src="<?php echo "pics/".$_SESSION["prof_profileimg"]; ?>" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">1 min</span>
-        <h4><?php echo $_SESSION["prof_user"] ." " .$_SESSION["prof_email"]; ?></h4><br>
+        <h4><?php echo $_SESSION["prof_user"]?></h4><br>
         <hr class="w3-clear">
         <p></p>
           <div class="w3-row-padding" style="margin:0 -16px">
@@ -213,10 +214,10 @@ ini_set('display_errors', 1);
 			<br></br>
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
-         <h4 class="w3-center"><?php echo $_SESSION["prof_user"] ."<br></br> " .$_SESSION["prof_email"]; ?></h4>
+         <h4 class="w3-center"><?php echo $_SESSION["prof_user"]?></h4>
          <p class="w3-center"><img src="<?php echo "pics/".$_SESSION["prof_profileimg"]; ?>" class="w3-circle" style="height:106px;width:106px" alt="banaan"></p>
          <hr>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>Liitus 16. veebruar, 2017</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>Liitus <?php #echo date('j. F, Y',strtotime($_SESSION['prof_date']));?></p>
         </div>
       </div>
       <br>
@@ -271,10 +272,6 @@ ini_set('display_errors', 1);
 </div>
 <br>
 
-<!-- Footer -->
-<footer class="w3-container w3-theme-d5">
-  <p><i class="fa fa-users fa-fw w3-margin-right"></i>Veebiprogremise projekt</p>
-</footer>
  <!--<a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="My Account"><img src="./pics/banaan.png" class="w3-circle" style="height:25px;width:25px" alt="Profiil"></a>-->
 <!-- ALL THE SCRIPTS -->
  <script>

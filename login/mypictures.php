@@ -24,7 +24,7 @@
 	
 	#$allFiles = array_slice(scandir($picsDir), 2);
 	
-	f#oreach ($allFiles as $file){
+	#foreach ($allFiles as $file){
 	#	$fileType = pathinfo($file, PATHINFO_EXTENSION);
 	##		array_push($picFiles, $file);
 	#	}
@@ -39,10 +39,11 @@
 <html>
 <head>
 	<title>
-		<?php echo $_SESSION["firstname"] ." " .$_SESSION["lastname"]; ?>
+		<?php echo $_SESSION["prof_user"]?> Pildid
 	</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/png" href="http://greeny.cs.tlu.ee/~salonorm/veebiprog_iseseisev/favicon.PNG">
 		<link rel="stylesheet" href="css/w3.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
@@ -83,7 +84,7 @@
         <img src="<?php echo "pics/".$_SESSION["prof_profileimg"]; ?>" alt="Profiil" class="w3-left w3-circle w3-margin-right" style="width:100px">
         <span class="w3-right w3-opacity"></span>
 		<br>
-        <h4><?php echo $_SESSION["prof_user"] ." " .$_SESSION["prof_email"]; ?></h4>
+        <h4><?php echo $_SESSION["prof_user"];?></h4>
 		<br><br>
         <hr class="w3-clear">
 		<div class="w3-row-padding" style="margin:0 -16px">
